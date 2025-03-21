@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 
 const CompoundInterestCalculator = () => {
@@ -6,7 +5,7 @@ const CompoundInterestCalculator = () => {
   const [dailyReturnRate, setDailyReturnRate] = useState("");
   const [investmentPeriod, setInvestmentPeriod] = useState("");
   const [withdrawalRate, setWithdrawalRate] = useState("");
-  const [leverage, setLeverage] = useState("1"); // 기본값 1로 설정
+  const [leverage, setLeverage] = useState("1"); // 기본값 1 설정
   const [results, setResults] = useState([]);
 
   const formatNumber = (num) => {
@@ -25,24 +24,32 @@ const CompoundInterestCalculator = () => {
     let period = parseInt(investmentPeriod) || 0;
     let withdrawRate = parseFloat(withdrawalRate) / 100 || 0;
     let lev = parseFloat(leverage) || 1;
+
     let accumulatedWithdrawals = 0;
+    let totalProfit = 0;
 
     let newResults = [];
     for (let day = 1; day <= period; day++) {
       let leveragedBalance = balance * lev;
       let dailyProfit = leveragedBalance * dailyRate;
       let withdrawAmount = dailyProfit * withdrawRate;
+
       accumulatedWithdrawals += withdrawAmount;
-      balance += dailyProfit - withdrawAmount;
+      totalProfit += dailyProfit;
+      let nextInvestment = balance + (dailyProfit - withdrawAmount);
 
       newResults.push({
         day,
-        balance: balance.toFixed(2),
-        leveragedBalance: leveragedBalance.toFixed(2),
-        dailyProfit: dailyProfit.toFixed(2),
-        withdrawAmount: withdrawAmount.toFixed(2),
-        totalWithdrawals: accumulatedWithdrawals.toFixed(2),
+        balance: balance.toFixed(1), // 당일 수익금 포함 X
+        leveragedBalance: leveragedBalance.toFixed(1),
+        dailyProfit: dailyProfit.toFixed(1),
+        withdrawAmount: withdrawAmount.toFixed(1),
+        nextInvestment: nextInvestment.toFixed(1),
+        totalWithdrawals: accumulatedWithdrawals.toFixed(1),
+        totalProfit: totalProfit.toFixed(1),
       });
+
+      balance = nextInvestment;
     }
     setResults(newResults);
   };
@@ -103,7 +110,9 @@ const CompoundInterestCalculator = () => {
                 <th>Leveraged Balance</th>
                 <th>Daily Profit</th>
                 <th>Withdraw Amount</th>
+                <th>Next Investment</th>
                 <th>Total Withdrawals</th>
+                <th>Total Profit</th>
               </tr>
             </thead>
             <tbody>
@@ -114,7 +123,9 @@ const CompoundInterestCalculator = () => {
                   <td>{formatNumber(row.leveragedBalance)}</td>
                   <td>{formatNumber(row.dailyProfit)}</td>
                   <td>{formatNumber(row.withdrawAmount)}</td>
+                  <td>{formatNumber(row.nextInvestment)}</td>
                   <td>{formatNumber(row.totalWithdrawals)}</td>
+                  <td>{formatNumber(row.totalProfit)}</td>
                 </tr>
               ))}
             </tbody>
