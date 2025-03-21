@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function CompoundInterestCalculator() {
   const [principal, setPrincipal] = useState(1000);
@@ -9,7 +9,7 @@ export default function CompoundInterestCalculator() {
   const [leverageCost, setLeverageCost] = useState(0);
   const [results, setResults] = useState([]);
 
-  const calculateCompoundInterest = () => {
+  const calculateCompoundInterest = useCallback(() => {
     let data = [];
     let balance = principal;
     let totalWithdrawn = 0;
@@ -27,70 +27,27 @@ export default function CompoundInterestCalculator() {
         day: i,
         principal: balance.toFixed(2),
         leveragedInvestment: leveragedInvestment.toFixed(2),
-        dailyRate: dailyRate,
         interest: interest.toFixed(2),
         cost: cost.toFixed(2),
         netInterest: netInterest.toFixed(2),
         withdraw: withdraw.toFixed(2),
-        totalBalance: balance.toFixed(2),
         totalWithdrawn: totalWithdrawn.toFixed(2),
       });
     }
     setResults(data);
-  };
+  }, [principal, dailyRate, days, withdrawRate, leverage, leverageCost]);
 
   return (
     <div className="p-6 max-w-xl mx-auto bg-white shadow-md rounded-lg">
       <h1 className="text-xl font-bold mb-4">Compound Interest Calculator</h1>
       <div className="space-y-2">
-        <input
-          type="number"
-          value={principal}
-          onChange={(e) => setPrincipal(Number(e.target.value))}
-          placeholder="Initial Investment"
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          value={dailyRate}
-          onChange={(e) => setDailyRate(Number(e.target.value))}
-          placeholder="Daily Interest Rate (%)"
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          value={days}
-          onChange={(e) => setDays(Number(e.target.value))}
-          placeholder="Investment Duration (days)"
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          value={withdrawRate}
-          onChange={(e) => setWithdrawRate(Number(e.target.value))}
-          placeholder="Daily Withdrawal (%)"
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          value={leverage}
-          onChange={(e) => setLeverage(Number(e.target.value))}
-          placeholder="Leverage Multiplier (e.g. 2 for 2x)"
-          className="w-full p-2 border rounded"
-        />
-        <input
-          type="number"
-          value={leverageCost}
-          onChange={(e) => setLeverageCost(Number(e.target.value))}
-          placeholder="Daily Leverage Cost (%)"
-          className="w-full p-2 border rounded"
-        />
-        <button
-          onClick={calculateCompoundInterest}
-          className="w-full bg-blue-500 text-white p-2 rounded mt-4"
-        >
-          Calculate
-        </button>
+        <input type="number" value={principal} onChange={(e) => setPrincipal(Number(e.target.value) || 0)} placeholder="Initial Investment" className="w-full p-2 border rounded" />
+        <input type="number" value={dailyRate} onChange={(e) => setDailyRate(Number(e.target.value) || 0)} placeholder="Daily Interest Rate (%)" className="w-full p-2 border rounded" />
+        <input type="number" value={days} onChange={(e) => setDays(Number(e.target.value) || 1)} placeholder="Investment Duration (days)" className="w-full p-2 border rounded" />
+        <input type="number" value={withdrawRate} onChange={(e) => setWithdrawRate(Number(e.target.value) || 0)} placeholder="Daily Withdrawal (%)" className="w-full p-2 border rounded" />
+        <input type="number" value={leverage} onChange={(e) => setLeverage(Number(e.target.value) || 1)} placeholder="Leverage Multiplier (e.g. 2 for 2x)" className="w-full p-2 border rounded" />
+        <input type="number" value={leverageCost} onChange={(e) => setLeverageCost(Number(e.target.value) || 0)} placeholder="Daily Leverage Cost (%)" className="w-full p-2 border rounded" />
+        <button onClick={calculateCompoundInterest} className="w-full bg-blue-500 text-white p-2 rounded mt-4">Calculate</button>
       </div>
       <div className="mt-6">
         <h2 className="text-lg font-semibold">Results</h2>
