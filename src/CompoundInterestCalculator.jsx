@@ -1,57 +1,56 @@
 import React, { useState } from "react";
 
 const CompoundInterestCalculator = () => {
-  const [initialInvestment, setInitialInvestment] = useState("");
-  const [dailyReturnRate, setDailyReturnRate] = useState("");
-  const [investmentPeriod, setInvestmentPeriod] = useState("");
-  const [withdrawalRate, setWithdrawalRate] = useState("");
-  const [leverage, setLeverage] = useState("1"); // 기본값 1 설정
+  const [initialInvestment, setInitialInvestment] = useState("1000000");
+  const [dailyReturnRate, setDailyReturnRate] = useState("5");
+  const [investmentPeriod, setInvestmentPeriod] = useState("100");
+  const [withdrawalRate, setWithdrawalRate] = useState("50");
+  const [leverage, setLeverage] = useState("1");
   const [results, setResults] = useState([]);
 
+  // 숫자에 쉼표 자동 추가하는 함수
   const formatNumber = (num) => {
-    if (!num) return "";
-    return new Intl.NumberFormat().format(num);
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
 
-  const handleInputChange = (setter) => (e) => {
-    const rawValue = e.target.value.replace(/,/g, ""); // 쉼표 제거
-    setter(rawValue);
+  // 입력값에서 쉼표 제거하고 숫자로 변환
+  const parseNumber = (str) => {
+    return parseFloat(str.replace(/,/g, "")) || 0;
   };
 
-  const calculateCompoundInterest = () => {
-    let balance = parseFloat(initialInvestment) || 0;
-    let dailyRate = parseFloat(dailyReturnRate) / 100 || 0;
-    let period = parseInt(investmentPeriod) || 0;
-    let withdrawRate = parseFloat(withdrawalRate) / 100 || 0;
-    let lev = parseFloat(leverage) || 1;
+  const handleCalculate = () => {
+    let balance = parseNumber(initialInvestment);
+    let leveragedBalance = balance * parseNumber(leverage);
+    let totalWithdrawals = 0;
+    let totalEarnings = balance;
+    let accumulatedNetProfit = 0;
+    let tempResults = [];
 
-    let accumulatedWithdrawals = 0;
-    let totalProfit = 0;
+    for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
+      let dailyProfit = (leveragedBalance * parseNumber(dailyReturnRate)) / 100;
+      let withdrawAmount = (dailyProfit * parseNumber(withdrawalRate)) / 100;
+      totalWithdrawals += withdrawAmount;
+      totalEarnings += dailyProfit;
+      accumulatedNetProfit = totalEarnings - parseNumber(initialInvestment);
 
-    let newResults = [];
-    for (let day = 1; day <= period; day++) {
-      let leveragedBalance = balance * lev;
-      let dailyProfit = leveragedBalance * dailyRate;
-      let withdrawAmount = dailyProfit * withdrawRate;
+      balance += dailyProfit - withdrawAmount;
+      leveragedBalance = balance * parseNumber(leverage);
+      let nextInvestment = balance;
 
-      accumulatedWithdrawals += withdrawAmount;
-      totalProfit += dailyProfit;
-      let nextInvestment = balance + (dailyProfit - withdrawAmount);
-
-      newResults.push({
+      tempResults.push({
         day,
-        balance: balance.toFixed(1), // 당일 수익금 포함 X
-        leveragedBalance: leveragedBalance.toFixed(1),
-        dailyProfit: dailyProfit.toFixed(1),
-        withdrawAmount: withdrawAmount.toFixed(1),
-        nextInvestment: nextInvestment.toFixed(1),
-        totalWithdrawals: accumulatedWithdrawals.toFixed(1),
-        totalProfit: totalProfit.toFixed(1),
+        balance: formatNumber(Math.round(balance)),
+        leveragedBalance: formatNumber(Math.round(leveragedBalance)),
+        dailyProfit: formatNumber(Math.round(dailyProfit)),
+        withdrawAmount: formatNumber(Math.round(withdrawAmount)),
+        nextInvestment: formatNumber(Math.round(nextInvestment)),
+        totalWithdrawals: formatNumber(Math.round(totalWithdrawals)),
+        totalEarnings: formatNumber(Math.round(totalEarnings)),
+        accumulatedNetProfit: formatNumber(Math.round(accumulatedNetProfit)),
       });
-
-      balance = nextInvestment;
     }
-    setResults(newResults);
+
+    setResults(tempResults);
   };
 
   return (
@@ -61,43 +60,43 @@ const CompoundInterestCalculator = () => {
         <label>Initial Investment</label>
         <input
           type="text"
-          value={formatNumber(initialInvestment)}
-          onChange={handleInputChange(setInitialInvestment)}
+          value={initialInvestment}
+          onChange={(e) => setInitialInvestment(formatNumber(parseNumber(e.target.value)))}
         />
       </div>
       <div className="input-group">
         <label>Daily Return Rate (%)</label>
         <input
           type="text"
-          value={formatNumber(dailyReturnRate)}
-          onChange={handleInputChange(setDailyReturnRate)}
+          value={dailyReturnRate}
+          onChange={(e) => setDailyReturnRate(e.target.value)}
         />
       </div>
       <div className="input-group">
         <label>Investment Period (Days)</label>
         <input
           type="text"
-          value={formatNumber(investmentPeriod)}
-          onChange={handleInputChange(setInvestmentPeriod)}
+          value={investmentPeriod}
+          onChange={(e) => setInvestmentPeriod(e.target.value)}
         />
       </div>
       <div className="input-group">
         <label>Withdrawal Rate (%)</label>
         <input
           type="text"
-          value={formatNumber(withdrawalRate)}
-          onChange={handleInputChange(setWithdrawalRate)}
+          value={withdrawalRate}
+          onChange={(e) => setWithdrawalRate(e.target.value)}
         />
       </div>
       <div className="input-group">
         <label>Leverage</label>
         <input
           type="text"
-          value={formatNumber(leverage)}
-          onChange={handleInputChange(setLeverage)}
+          value={leverage}
+          onChange={(e) => setLeverage(e.target.value)}
         />
       </div>
-      <button onClick={calculateCompoundInterest}>Calculate</button>
+      <button onClick={handleCalculate}>Calculate</button>
 
       {results.length > 0 && (
         <div className="results">
@@ -112,20 +111,22 @@ const CompoundInterestCalculator = () => {
                 <th>Withdraw Amount</th>
                 <th>Next Investment</th>
                 <th>Total Withdrawals</th>
-                <th>Total Profit</th>
+                <th>Total Earnings</th>
+                <th>Accumulated Net Profit</th>
               </tr>
             </thead>
             <tbody>
-              {results.map((row) => (
-                <tr key={row.day}>
-                  <td>{row.day}</td>
-                  <td>{formatNumber(row.balance)}</td>
-                  <td>{formatNumber(row.leveragedBalance)}</td>
-                  <td>{formatNumber(row.dailyProfit)}</td>
-                  <td>{formatNumber(row.withdrawAmount)}</td>
-                  <td>{formatNumber(row.nextInvestment)}</td>
-                  <td>{formatNumber(row.totalWithdrawals)}</td>
-                  <td>{formatNumber(row.totalProfit)}</td>
+              {results.map((result, index) => (
+                <tr key={index}>
+                  <td>{result.day}</td>
+                  <td>{result.balance}</td>
+                  <td>{result.leveragedBalance}</td>
+                  <td>{result.dailyProfit}</td>
+                  <td>{result.withdrawAmount}</td>
+                  <td>{result.nextInvestment}</td>
+                  <td>{result.totalWithdrawals}</td>
+                  <td>{result.totalEarnings}</td>
+                  <td>{result.accumulatedNetProfit}</td>
                 </tr>
               ))}
             </tbody>
