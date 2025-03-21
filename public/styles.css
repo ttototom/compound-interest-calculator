@@ -53,12 +53,14 @@ button:hover {
 }
 
 .results {
-  margin-top: 20px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
+/* 출력 부분을 표로 유지 */
 .result-table {
   width: 100%;
   border-collapse: collapse;
@@ -84,3 +86,4 @@ button:hover {
     width: 100%;
   }
 }
+
