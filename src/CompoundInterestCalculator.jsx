@@ -8,21 +8,14 @@ const CompoundInterestCalculator = () => {
   const [leverage, setLeverage] = useState("1");
   const [results, setResults] = useState([]);
 
-  // 숫자에 쉼표 자동 추가하는 함수
-  const formatNumber = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  };
-
-  // 입력값에서 쉼표 제거하고 숫자로 변환
-  const parseNumber = (str) => {
-    return parseFloat(str.replace(/,/g, "")) || 0;
-  };
+  const formatNumber = (num) => num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const parseNumber = (str) => parseFloat(str.replace(/,/g, "")) || 0;
 
   const handleCalculate = () => {
-    let balance = parseNumber(initialInvestment);
-    let leveragedBalance = balance * parseNumber(leverage);
+    let prevBalance = parseNumber(initialInvestment); // 이전 날의 balance
+    let leveragedBalance = prevBalance * parseNumber(leverage);
     let totalWithdrawals = 0;
-    let totalEarnings = balance;
+    let totalEarnings = prevBalance;
     let accumulatedNetProfit = 0;
     let tempResults = [];
 
@@ -33,9 +26,9 @@ const CompoundInterestCalculator = () => {
       totalEarnings += dailyProfit;
       accumulatedNetProfit = totalEarnings - parseNumber(initialInvestment);
 
-      balance += dailyProfit - withdrawAmount;
+      let balance = prevBalance - withdrawAmount; // 당일 수익 전 잔고
       leveragedBalance = balance * parseNumber(leverage);
-      let nextInvestment = balance;
+      let nextInvestment = balance + dailyProfit; // 다음날 투자금
 
       tempResults.push({
         day,
@@ -48,6 +41,8 @@ const CompoundInterestCalculator = () => {
         totalEarnings: formatNumber(Math.round(totalEarnings)),
         accumulatedNetProfit: formatNumber(Math.round(accumulatedNetProfit)),
       });
+
+      prevBalance = balance + dailyProfit; // balance 업데이트 (다음 날로 넘김)
     }
 
     setResults(tempResults);
