@@ -19,31 +19,35 @@ const handleCalculate = () => {
   let accumulatedNetProfit = 0;
   let tempResults = [];
 
-  for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
-    let dailyProfit = (leveragedBalance * parseNumber(dailyReturnRate)) / 100;
+for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
+    let balance = prevBalance; // 당일 balance는 전일 재투자금
+    leveragedBalance = balance * parseNumber(leverage);
+
+    // dailyProfit을 "당일 balance" 기준으로 계산해야 함!
+    let dailyProfit = (balance * parseNumber(dailyReturnRate)) / 100;
+
     let withdrawAmount = (dailyProfit * parseNumber(withdrawalRate)) / 100;
     totalWithdrawals += withdrawAmount;
     totalEarnings += dailyProfit;
     accumulatedNetProfit = totalEarnings - parseNumber(initialInvestment);
 
-    let balance = prevBalance; // 당일 balance는 전일 재투자금 (수익 더하기 전)
-    leveragedBalance = balance * parseNumber(leverage);
     let nextInvestment = balance + dailyProfit - withdrawAmount; // 다음날 재투자금
 
     tempResults.push({
-      day,
-      balance: formatNumber(Math.round(balance)), // 당일 balance = 전일 재투자금
-      leveragedBalance: formatNumber(Math.round(leveragedBalance)),
-      dailyProfit: formatNumber(Math.round(dailyProfit)),
-      withdrawAmount: formatNumber(Math.round(withdrawAmount)),
-      nextInvestment: formatNumber(Math.round(nextInvestment)), // 내일 투자금
-      totalWithdrawals: formatNumber(Math.round(totalWithdrawals)),
-      totalEarnings: formatNumber(Math.round(totalEarnings)),
-      accumulatedNetProfit: formatNumber(Math.round(accumulatedNetProfit)),
+        day,
+        balance: formatNumber(Math.round(balance)),
+        leveragedBalance: formatNumber(Math.round(leveragedBalance)),
+        dailyProfit: formatNumber(Math.round(dailyProfit)),
+        withdrawAmount: formatNumber(Math.round(withdrawAmount)),
+        nextInvestment: formatNumber(Math.round(nextInvestment)),
+        totalWithdrawals: formatNumber(Math.round(totalWithdrawals)),
+        totalEarnings: formatNumber(Math.round(totalEarnings)),
+        accumulatedNetProfit: formatNumber(Math.round(accumulatedNetProfit)),
     });
 
-    prevBalance = nextInvestment; // balance 업데이트 (다음 날 적용)
-  }
+    prevBalance = nextInvestment;
+}
+
 
   setResults(tempResults);
 };
