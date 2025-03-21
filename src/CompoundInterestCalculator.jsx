@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 
 const CompoundInterestCalculator = () => {
@@ -5,95 +6,115 @@ const CompoundInterestCalculator = () => {
   const [dailyReturnRate, setDailyReturnRate] = useState("");
   const [investmentPeriod, setInvestmentPeriod] = useState("");
   const [withdrawalRate, setWithdrawalRate] = useState("");
-  const [leverage, setLeverage] = useState("");
+  const [leverage, setLeverage] = useState("1"); // 기본값 1로 설정
+  const [results, setResults] = useState([]);
 
-  const calculateResults = () => {
-    let results = [];
-    let balance = parseFloat(initialInvestment);
-    let totalWithdrawn = 0;
-
-    for (let day = 1; day <= parseInt(investmentPeriod); day++) {
-      let prevBalance = balance;
-      let leveragedBalance = prevBalance * parseFloat(leverage);
-      let dailyProfit = leveragedBalance * (parseFloat(dailyReturnRate) / 100);
-      let withdrawalAmount = dailyProfit * (parseFloat(withdrawalRate) / 100);
-      totalWithdrawn += withdrawalAmount;
-      balance = prevBalance + dailyProfit - withdrawalAmount;
-
-      results.push({
-        day,
-        prevBalance: prevBalance.toFixed(2),
-        leveragedBalance: leveragedBalance.toFixed(2),
-        dailyProfit: dailyProfit.toFixed(2),
-        withdrawalAmount: withdrawalAmount.toFixed(2),
-        totalWithdrawn: totalWithdrawn.toFixed(2),
-        reinvestmentBalance: balance.toFixed(2),
-        totalBalance: (balance + totalWithdrawn).toFixed(2),
-      });
-    }
-    return results;
+  const formatNumber = (num) => {
+    if (!num) return "";
+    return new Intl.NumberFormat().format(num);
   };
 
-  const results = calculateResults();
+  const handleInputChange = (setter) => (e) => {
+    const rawValue = e.target.value.replace(/,/g, ""); // 쉼표 제거
+    setter(rawValue);
+  };
+
+  const calculateCompoundInterest = () => {
+    let balance = parseFloat(initialInvestment) || 0;
+    let dailyRate = parseFloat(dailyReturnRate) / 100 || 0;
+    let period = parseInt(investmentPeriod) || 0;
+    let withdrawRate = parseFloat(withdrawalRate) / 100 || 0;
+    let lev = parseFloat(leverage) || 1;
+    let accumulatedWithdrawals = 0;
+
+    let newResults = [];
+    for (let day = 1; day <= period; day++) {
+      let leveragedBalance = balance * lev;
+      let dailyProfit = leveragedBalance * dailyRate;
+      let withdrawAmount = dailyProfit * withdrawRate;
+      accumulatedWithdrawals += withdrawAmount;
+      balance += dailyProfit - withdrawAmount;
+
+      newResults.push({
+        day,
+        balance: balance.toFixed(2),
+        leveragedBalance: leveragedBalance.toFixed(2),
+        dailyProfit: dailyProfit.toFixed(2),
+        withdrawAmount: withdrawAmount.toFixed(2),
+        totalWithdrawals: accumulatedWithdrawals.toFixed(2),
+      });
+    }
+    setResults(newResults);
+  };
 
   return (
     <div className="container">
       <h2>Compound Interest Calculator</h2>
-
       <div className="input-group">
-        <label>Initial Investment ($)</label>
-        <input type="number" value={initialInvestment} onChange={(e) => setInitialInvestment(e.target.value)} />
+        <label>Initial Investment</label>
+        <input
+          type="text"
+          value={formatNumber(initialInvestment)}
+          onChange={handleInputChange(setInitialInvestment)}
+        />
       </div>
-
       <div className="input-group">
         <label>Daily Return Rate (%)</label>
-        <input type="number" value={dailyReturnRate} onChange={(e) => setDailyReturnRate(e.target.value)} />
+        <input
+          type="text"
+          value={formatNumber(dailyReturnRate)}
+          onChange={handleInputChange(setDailyReturnRate)}
+        />
       </div>
-
       <div className="input-group">
         <label>Investment Period (Days)</label>
-        <input type="number" value={investmentPeriod} onChange={(e) => setInvestmentPeriod(e.target.value)} />
+        <input
+          type="text"
+          value={formatNumber(investmentPeriod)}
+          onChange={handleInputChange(setInvestmentPeriod)}
+        />
       </div>
-
       <div className="input-group">
         <label>Withdrawal Rate (%)</label>
-        <input type="number" value={withdrawalRate} onChange={(e) => setWithdrawalRate(e.target.value)} />
+        <input
+          type="text"
+          value={formatNumber(withdrawalRate)}
+          onChange={handleInputChange(setWithdrawalRate)}
+        />
       </div>
-
       <div className="input-group">
-        <label>Leverage Multiplier</label>
-        <input type="number" value={leverage} onChange={(e) => setLeverage(e.target.value)} />
+        <label>Leverage</label>
+        <input
+          type="text"
+          value={formatNumber(leverage)}
+          onChange={handleInputChange(setLeverage)}
+        />
       </div>
-
-      <button onClick={calculateResults}>Calculate</button>
+      <button onClick={calculateCompoundInterest}>Calculate</button>
 
       {results.length > 0 && (
         <div className="results">
           <h3>Results</h3>
-          <table>
+          <table className="result-table">
             <thead>
               <tr>
                 <th>Day</th>
-                <th>Balance (Investment)</th>
-                <th>Leverage Balance</th>
+                <th>Balance</th>
+                <th>Leveraged Balance</th>
                 <th>Daily Profit</th>
-                <th>Withdrawal</th>
-                <th>Total Withdrawn</th>
-                <th>Reinvestment Balance</th>
-                <th>Total Balance</th>
+                <th>Withdraw Amount</th>
+                <th>Total Withdrawals</th>
               </tr>
             </thead>
             <tbody>
-              {results.map((row, index) => (
-                <tr key={index}>
+              {results.map((row) => (
+                <tr key={row.day}>
                   <td>{row.day}</td>
-                  <td>${row.prevBalance}</td>
-                  <td>${row.leveragedBalance}</td>
-                  <td>${row.dailyProfit}</td>
-                  <td>${row.withdrawalAmount}</td>
-                  <td>${row.totalWithdrawn}</td>
-                  <td>${row.reinvestmentBalance}</td>
-                  <td>${row.totalBalance}</td>
+                  <td>{formatNumber(row.balance)}</td>
+                  <td>{formatNumber(row.leveragedBalance)}</td>
+                  <td>{formatNumber(row.dailyProfit)}</td>
+                  <td>{formatNumber(row.withdrawAmount)}</td>
+                  <td>{formatNumber(row.totalWithdrawals)}</td>
                 </tr>
               ))}
             </tbody>
