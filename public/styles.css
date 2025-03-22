@@ -65,6 +65,7 @@ button:hover {
 .results-table-container {
   width: 100%;
   overflow-x: auto; /* 가로 스크롤 허용 */
+  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 
 .result-table {
@@ -76,7 +77,6 @@ button:hover {
 
 .result-table th,
 .result-table td {
-  white-space: nowrap;
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
