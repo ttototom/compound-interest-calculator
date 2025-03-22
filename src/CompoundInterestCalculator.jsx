@@ -111,7 +111,7 @@ tempResults.push({
                 <th>Withdraw Amount</th>
                 <th>Next Investment</th>
                 <th>Total Withdrawals</th>
-                <th>Total Earnings</th>
+                <th>Total Balance</th>
                 <th>Accumulated Net Profit</th>
               </tr>
             </thead>
@@ -125,7 +125,7 @@ tempResults.push({
                   <td>{result.withdrawAmount}</td>
                   <td>{result.nextInvestment}</td>
                   <td>{result.totalWithdrawals}</td>
-                  <td>{result.totalEarnings}</td>
+                  <td>{result.totalBalance}</td>
                   <td>{result.accumulatedNetProfit}</td>
                 </tr>
               ))}
