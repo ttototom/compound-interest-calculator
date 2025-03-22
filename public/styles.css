@@ -6,7 +6,7 @@ body {
   min-height: 100vh;
   background-color: #f4f4f4;
   margin: 0;
-  overflow-y: auto; /*  세로 스크롤 가능하게 수정 */
+  overflow-y: auto; /* ✅ 페이지 전체 스크롤 가능하게 수정 */
 }
 
 .container {
@@ -52,46 +52,46 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* 결과 테이블이 넘칠 경우 가로 스크롤 가능하도록 수정 */
+/* ✅ PC에서는 테이블이 크게 나오도록 설정 */
 .results {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  overflow-x: auto; /*  가로 스크롤 추가 */
 }
 
 .result-table {
   width: 100%;
-  min-width: 600px; /*  최소 너비 설정해서 테이블이 너무 좁아지는 것 방지 */
+  max-width: 1000px; /* ✅ PC에서 테이블이 크게 보이도록 */
   border-collapse: collapse;
   background: white;
 }
 
-.result-table th,
-.result-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-  text-align: center;
+/* ✅ PC에서는 가로 스크롤 없도록 설정 */
+@media (min-width: 601px) {
+  .results {
+    overflow-x: visible; /* ✅ PC에서는 스크롤 바 없음 */
+  }
 }
 
-.result-table th {
-  background-color: #007bff;
-  color: white;
-}
-
-/*  모바일에서 화면이 잘리지 않도록 추가 */
+/* ✅ 모바일에서는 가로 스크롤 추가 */
 @media (max-width: 600px) {
   body {
-    display: block; /*  모바일에서 flex 때문에 잘리는 문제 해결 */
+    display: block;
   }
 
   .container {
-    width: 90%; /*  화면에 맞게 조정 */
+    width: 90%;
     padding: 20px;
   }
 
+  .results {
+    overflow-x: auto; /* ✅ 모바일에서 가로 스크롤 가능하도록 */
+  }
+
   .result-table {
+    min-width: 800px; /* ✅ 최소 너비 설정 */
     font-size: 14px;
   }
+}
