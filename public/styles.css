@@ -8,8 +8,8 @@ body {
 }
 
 html, body {
-  width: 100%;
-  overflow-x: hidden; /* 화면이 넘치지 않도록 */
+  width: auto; /* 기존 width: 100% 제거 */
+  overflow-x: visible; /* 좌우 스크롤 허용 */
 }
 .container {
   max-width: 1000px; /* 최대 너비 지정 */
@@ -70,7 +70,7 @@ button:hover {
 
 .result-table {
   width: max-content; /* 내용 크기에 맞게 자동 조정 */
-  min-width: 100%; /* 최소한 부모 요소만큼은 유지 */
+  min-width: max-content;
   border-collapse: collapse;
   background: white;
 }
