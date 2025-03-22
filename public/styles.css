@@ -6,11 +6,10 @@ body {
   min-height: 100vh;
   background-color: #f4f4f4;
   margin: 0;
-  overflow-y: auto; /* ✅ 페이지 전체 스크롤 가능하게 수정 */
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1000px; /* 기존보다 넉넉하게 설정 */
   width: 100%;
   background: white;
   padding: 30px;
@@ -24,7 +23,6 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 15px;
-  width: 100%;
 }
 
 .input-group label {
@@ -33,7 +31,7 @@ body {
 }
 
 .input-group input {
-  width: calc(100% - 20px);
+  width: calc(100% - 20px); /* 여백 추가 */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -52,7 +50,6 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* ✅ PC에서는 테이블이 크게 나오도록 설정 */
 .results {
   margin-top: 30px;
   display: flex;
@@ -63,35 +60,24 @@ button:hover {
 
 .result-table {
   width: 100%;
-  max-width: 1000px; /* ✅ PC에서 테이블이 크게 보이도록 */
   border-collapse: collapse;
   background: white;
 }
 
-/* ✅ PC에서는 가로 스크롤 없도록 설정 */
-@media (min-width: 601px) {
-  .results {
-    overflow-x: visible; /* ✅ PC에서는 스크롤 바 없음 */
-  }
+.result-table th,
+.result-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 }
 
-/* ✅ 모바일에서는 가로 스크롤 추가 */
+.result-table th {
+  background-color: #007bff;
+  color: white;
+}
+
 @media (max-width: 600px) {
-  body {
-    display: block;
-  }
-
-  .container {
-    width: 90%;
-    padding: 20px;
-  }
-
-  .results {
-    overflow-x: auto; /* ✅ 모바일에서 가로 스크롤 가능하도록 */
-  }
-
   .result-table {
-    min-width: 800px; /* ✅ 최소 너비 설정 */
     font-size: 14px;
   }
 }
