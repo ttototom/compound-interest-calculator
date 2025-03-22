@@ -58,14 +58,12 @@ button:hover {
   width: 100%;
 }
 
-/* 테이블에 가로 스크롤 추가 */
 .result-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
 }
 
-/* 테이블 제목과 내용 */
 .result-table th,
 .result-table td {
   border: 1px solid #ddd;
@@ -76,13 +74,6 @@ button:hover {
 .result-table th {
   background-color: #007bff;
   color: white;
-}
-
-/* 모바일에서 가로 스크롤 처리 */
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;  /* 가로 스크롤 활성화 */
-  -webkit-overflow-scrolling: touch; /* 부드러운 스크롤을 위해 추가 */
 }
 
 @media (max-width: 600px) {
