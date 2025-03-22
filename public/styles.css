@@ -59,9 +59,10 @@ button:hover {
 }
 
 .result-table {
-  width: 100%;
+  width: max-content; /* 내용에 맞게 테이블 크기 조절 */
+  min-width: 100%; /* 최소한 부모 요소만큼의 너비 유지 */
   border-collapse: collapse;
-  background: white;
+  background: white; /* 배경색 유지 */
 }
 
 .result-table th,
@@ -74,6 +75,11 @@ button:hover {
 .result-table th {
   background-color: #007bff;
   color: white;
+}
+
+.results-table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
 @media (max-width: 600px) {
