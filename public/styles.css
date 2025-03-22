@@ -7,6 +7,10 @@ body {
   /* display: flex; justify-content: center; 제거 → 화면 잘림 방지 */
 }
 
+html, body {
+  width: 100%;
+  overflow-x: hidden; /* 화면이 넘치지 않도록 */
+}
 .container {
   max-width: 1000px; /* 최대 너비 지정 */
   width: 100%;
