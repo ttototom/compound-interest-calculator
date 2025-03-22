@@ -53,54 +53,56 @@ tempResults.push({
 };
 
 
-  return (
-    <div className="container">
-      <h2>Compound Interest Calculator</h2>
-      <div className="input-group">
-        <label>Initial Investment</label>
-        <input
-          type="text"
-          value={initialInvestment}
-          onChange={(e) => setInitialInvestment(formatNumber(parseNumber(e.target.value)))}
-        />
-      </div>
-      <div className="input-group">
-        <label>Daily Return Rate (%)</label>
-        <input
-          type="text"
-          value={dailyReturnRate}
-          onChange={(e) => setDailyReturnRate(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Investment Period (Days)</label>
-        <input
-          type="text"
-          value={investmentPeriod}
-          onChange={(e) => setInvestmentPeriod(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Withdrawal Rate (%)</label>
-        <input
-          type="text"
-          value={withdrawalRate}
-          onChange={(e) => setWithdrawalRate(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>Leverage</label>
-        <input
-          type="text"
-          value={leverage}
-          onChange={(e) => setLeverage(e.target.value)}
-        />
-      </div>
-      <button onClick={handleCalculate}>Calculate</button>
+return (
+  <div className="container">
+    <h2>Compound Interest Calculator</h2>
+    <div className="input-group">
+      <label>Initial Investment</label>
+      <input
+        type="text"
+        value={initialInvestment}
+        onChange={(e) => setInitialInvestment(formatNumber(parseNumber(e.target.value)))}
+      />
+    </div>
+    <div className="input-group">
+      <label>Daily Return Rate (%)</label>
+      <input
+        type="text"
+        value={dailyReturnRate}
+        onChange={(e) => setDailyReturnRate(e.target.value)}
+      />
+    </div>
+    <div className="input-group">
+      <label>Investment Period (Days)</label>
+      <input
+        type="text"
+        value={investmentPeriod}
+        onChange={(e) => setInvestmentPeriod(e.target.value)}
+      />
+    </div>
+    <div className="input-group">
+      <label>Withdrawal Rate (%)</label>
+      <input
+        type="text"
+        value={withdrawalRate}
+        onChange={(e) => setWithdrawalRate(e.target.value)}
+      />
+    </div>
+    <div className="input-group">
+      <label>Leverage</label>
+      <input
+        type="text"
+        value={leverage}
+        onChange={(e) => setLeverage(e.target.value)}
+      />
+    </div>
+    <button onClick={handleCalculate}>Calculate</button>
 
-      {results.length > 0 && (
-        <div className="results">
-          <h3>Results</h3>
+    {results.length > 0 && (
+      <div className="results">
+        <h3>Results</h3>
+        {/* table-responsive 클래스를 추가한 div */}
+        <div className="table-responsive">
           <table className="result-table">
             <thead>
               <tr>
@@ -132,9 +134,7 @@ tempResults.push({
             </tbody>
           </table>
         </div>
-      )}
-    </div>
-  );
-};
-
-export default CompoundInterestCalculator;
+      </div>
+    )}
+  </div>
+);
