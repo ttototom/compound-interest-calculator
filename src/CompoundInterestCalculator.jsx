@@ -33,17 +33,17 @@ for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
 
     let nextInvestment = balance + dailyProfit - withdrawAmount; // 다음날 재투자금
 
-    tempResults.push({
-        day,
-        balance: formatNumber(Math.round(balance)),
-        leveragedBalance: formatNumber(Math.round(leveragedBalance)),
-        dailyProfit: formatNumber(Math.round(dailyProfit)),
-        withdrawAmount: formatNumber(Math.round(withdrawAmount)),
-        nextInvestment: formatNumber(Math.round(nextInvestment)),
-        totalWithdrawals: formatNumber(Math.round(totalWithdrawals)),
-        totalEarnings: formatNumber(Math.round(totalEarnings)),
-        accumulatedNetProfit: formatNumber(Math.round(accumulatedNetProfit)),
-    });
+tempResults.push({
+    day,
+    balance: formatNumber(parseFloat(balance.toFixed(1))),
+    leveragedBalance: formatNumber(parseFloat(leveragedBalance.toFixed(1))),
+    dailyProfit: formatNumber(parseFloat(dailyProfit.toFixed(1))),
+    withdrawAmount: formatNumber(parseFloat(withdrawAmount.toFixed(1))),
+    nextInvestment: formatNumber(parseFloat(nextInvestment.toFixed(1))),
+    totalWithdrawals: formatNumber(parseFloat(totalWithdrawals.toFixed(1))),
+    totalEarnings: formatNumber(parseFloat(totalEarnings.toFixed(1))),
+    accumulatedNetProfit: formatNumber(parseFloat(accumulatedNetProfit.toFixed(1))),
+});
 
     prevBalance = nextInvestment;
 }
