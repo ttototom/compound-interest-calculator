@@ -6,10 +6,11 @@ body {
   min-height: 100vh;
   background-color: #f4f4f4;
   margin: 0;
+  overflow-y: auto; /*  세로 스크롤 가능하게 수정 */
 }
 
 .container {
-  max-width: 1000px; /* 기존보다 넉넉하게 설정 */
+  max-width: 1000px;
   width: 100%;
   background: white;
   padding: 30px;
@@ -23,6 +24,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .input-group label {
@@ -31,7 +33,7 @@ body {
 }
 
 .input-group input {
-  width: calc(100% - 20px); /* 여백 추가 */
+  width: calc(100% - 20px);
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -50,16 +52,19 @@ button:hover {
   background-color: #0056b3;
 }
 
+/* 결과 테이블이 넘칠 경우 가로 스크롤 가능하도록 수정 */
 .results {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+  overflow-x: auto; /*  가로 스크롤 추가 */
 }
 
 .result-table {
   width: 100%;
+  min-width: 600px; /*  최소 너비 설정해서 테이블이 너무 좁아지는 것 방지 */
   border-collapse: collapse;
   background: white;
 }
@@ -76,8 +81,17 @@ button:hover {
   color: white;
 }
 
+/*  모바일에서 화면이 잘리지 않도록 추가 */
 @media (max-width: 600px) {
+  body {
+    display: block; /*  모바일에서 flex 때문에 잘리는 문제 해결 */
+  }
+
+  .container {
+    width: 90%; /*  화면에 맞게 조정 */
+    padding: 20px;
+  }
+
   .result-table {
     font-size: 14px;
   }
-}
