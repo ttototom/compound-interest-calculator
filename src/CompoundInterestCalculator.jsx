@@ -23,8 +23,8 @@ for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
     let balance = prevBalance; // 당일 balance는 전일 재투자금
     leveragedBalance = balance * parseNumber(leverage);
 
-    // dailyProfit을 "당일 balance" 기준으로 계산해야 함!
-    let dailyProfit = (balance * parseNumber(dailyReturnRate)) / 100;
+    
+    let dailyProfit = (leveragedBalance * parseNumber(dailyReturnRate)) / 100;
 
     let withdrawAmount = (dailyProfit * parseNumber(withdrawalRate)) / 100;
     totalWithdrawals += withdrawAmount;
