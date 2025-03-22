@@ -58,18 +58,18 @@ button:hover {
   width: 100%;
 }
 
-/* 테이블 컨테이너 */
 .results-table-container {
   width: 100%;
-  overflow-x: auto; /* 가로 스크롤 허용 (모바일 대응) */
+  overflow-x: auto; /* 가로 스크롤 허용 */
+  display: flex;
+  justify-content: center; /* 테이블을 중앙 정렬 */
 }
 
-/* 테이블 스타일 */
 .result-table {
-  width: max-content; /* 내용에 맞게 테이블 크기 조절 */
-  min-width: 100%; /* 최소한 부모 요소만큼의 너비 유지 */
+  width: 100%; /* 전체 화면을 차지하도록 변경 */
+  min-width: 600px; /* 최소 너비 설정 (너무 작아지지 않도록) */
   border-collapse: collapse;
-  background: white; /* 배경색 유지 */
+  background: white;
 }
 
 .result-table th,
