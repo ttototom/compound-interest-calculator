@@ -9,14 +9,13 @@ body {
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 1000px; /* 기존보다 넉넉하게 설정 */
   width: 100%;
   background: white;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  min-height: auto; /* 기존 min-height: 100vh 제거 */
 }
 
 .input-group {
@@ -32,7 +31,7 @@ body {
 }
 
 .input-group input {
-  width: calc(100% - 20px);
+  width: calc(100% - 20px); /* 여백 추가 */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -51,23 +50,18 @@ button:hover {
   background-color: #0056b3;
 }
 
-/* 수정된 스타일 */
 .results {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-height: 60vh; /* 결과 영역이 너무 길어지지 않도록 */
-  overflow: auto; /* 스크롤 가능하게 */
 }
 
 .result-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  display: block;
-  overflow-x: auto; /* 모바일에서 가로 스크롤 가능하게 */
 }
 
 .result-table th,
