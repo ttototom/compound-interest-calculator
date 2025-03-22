@@ -15,7 +15,7 @@ const handleCalculate = () => {
   let prevBalance = parseNumber(initialInvestment); // 첫날 balance = 초기 투자금
   let leveragedBalance = prevBalance * parseNumber(leverage);
   let totalWithdrawals = 0;
-  let totalEarnings = prevBalance;
+  let totalBalance = prevBalance;
   let accumulatedNetProfit = 0;
   let tempResults = [];
 
@@ -28,8 +28,8 @@ for (let day = 1; day <= parseNumber(investmentPeriod); day++) {
 
     let withdrawAmount = (dailyProfit * parseNumber(withdrawalRate)) / 100;
     totalWithdrawals += withdrawAmount;
-    totalEarnings += dailyProfit;
-    accumulatedNetProfit = totalEarnings - parseNumber(initialInvestment);
+    totalBalance += dailyProfit;
+    accumulatedNetProfit = totalBalance - parseNumber(initialInvestment);
 
     let nextInvestment = balance + dailyProfit - withdrawAmount; // 다음날 재투자금
 
@@ -41,7 +41,7 @@ tempResults.push({
     withdrawAmount: formatNumber(parseFloat(withdrawAmount.toFixed(1))),
     nextInvestment: formatNumber(parseFloat(nextInvestment.toFixed(1))),
     totalWithdrawals: formatNumber(parseFloat(totalWithdrawals.toFixed(1))),
-    totalEarnings: formatNumber(parseFloat(totalEarnings.toFixed(1))),
+    totalBalance: formatNumber(parseFloat(totalBalance.toFixed(1))),
     accumulatedNetProfit: formatNumber(parseFloat(accumulatedNetProfit.toFixed(1))),
 });
 
