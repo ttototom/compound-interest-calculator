@@ -1,4 +1,3 @@
-
 body {
   font-family: Arial, sans-serif;
   min-height: 100vh;
@@ -8,9 +7,11 @@ body {
 }
 
 html, body {
-  width: auto; /* 기존 width: 100% 제거 */
-  overflow-x: visible; /* 좌우 스크롤 허용 */
+  width: 100%;
+  min-width: 100%;
+  overflow-x: auto; /* 좌우 스크롤 가능하도록 */
 }
+
 .container {
   max-width: 1000px; /* 최대 너비 지정 */
   width: 100%;
@@ -63,14 +64,14 @@ button:hover {
 }
 
 .results-table-container {
-  width: 100%;
-  overflow-x: auto; /* 가로 스크롤 허용 */
-  white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+  max-width: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 
 .result-table {
-  width: max-content; /* 내용 크기에 맞게 자동 조정 */
-  min-width: max-content;
+  width: 100%;
+  min-width: 900px; /* 테이블이 너무 작아지는 것 방지 */
   border-collapse: collapse;
   background: white;
 }
@@ -90,6 +91,7 @@ button:hover {
 /* 모바일 최적화 */
 @media (max-width: 600px) {
   .result-table {
-    font-size: 14px;
+    width: 100%; /* 화면 크기에 맞춰 조정 */
   }
 }
+
